@@ -1,0 +1,33 @@
+# ==============================================================================
+# Git Ignore
+# ==============================================================================
+
+
+# Defaults
+# ==============================================================================
+
+.env
+vendor/
+.vagrant
+.DS_Store
+Vagrantfile
+node_modules
+npm-debug.log
+
+
+# Public
+# ==============================================================================
+
+public/upgrade
+public/uploads
+public/languages
+public/wordpress
+public/index.php
+
+
+# Plugins
+# ==============================================================================
+
+public/plugins/*
+!public/plugins/app-*
+!public/plugins/clean.php
