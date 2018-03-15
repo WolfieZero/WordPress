@@ -3,7 +3,6 @@
 // Generate Keys
 // =============================================================================
 
-
 $envFile = __DIR__ . '/../../.env';
 $envContent = file_get_contents($envFile);
 
@@ -28,11 +27,10 @@ foreach ($keys as $key) {
 
 file_put_contents($envFile, $envContent);
 
-
 /**
  * Generate random string of various characters.
  *
- * @param  integer  $length  Length of string
+ * @param integer $length Length of string
  * @return string
  */
 function randomString($length = 64)

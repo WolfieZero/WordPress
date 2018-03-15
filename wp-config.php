@@ -3,22 +3,25 @@
 // WordPress Config
 // =============================================================================
 
+// Get the composer files
+require_once(__DIR__ . '/vendor/autoload.php');
 
-// Register the composer auto loader.
-require __DIR__.'/../vendor/autoload.php';
-
-// Detect the environment.
-(new Dotenv\Dotenv(__DIR__.'/..'))->load();
-
+// Detect the environment
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+$dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST']);
 
 // General Configs
 // =============================================================================
 
 // Set the home url to the current domain
-define('WP_HOME', env('WP_URL', 'http://' . $_SERVER['HTTP_HOST']));
+define('WP_HOME', env('WP_URL', 'http' . (isSecure() ? 's' : '') . '://' . $_SERVER['HTTP_HOST']));
+
+// Directory where WordPress will be located
+define('WP_DIRECTORY', env('WP_DIRECTORY', 'wp'));
 
 // Custom WordPress directory
-define('WP_SITEURL', env('WP_SITEURL', WP_HOME . '/wordpress'));
+define('WP_SITEURL', env('WP_SITEURL', WP_HOME . '/' . WP_DIRECTORY));
 
 // Custom content directory
 define('WP_CONTENT_DIR', env('WP_CONTENT_DIR', __DIR__));
@@ -42,7 +45,6 @@ define('IMAGE_EDIT_OVERWRITE', env('IMAGE_EDIT_OVERWRITE', true));
 // Prevent file edit from the dashboard
 define('DISALLOW_FILE_EDIT', env('DISALLOW_FILE_EDIT', true));
 
-
 // WordPess Database Connection Details
 // =============================================================================
 
@@ -55,7 +57,6 @@ define('DB_COLLATE', env('DB_COLLATE', ''));
 
 // WordPress database table prefix
 $table_prefix = env('TABLE_PREFIX', 'wp_');
-
 
 // Authentication Unique Keys and Salts
 // =============================================================================
@@ -75,7 +76,6 @@ define('SECURE_AUTH_SALT', env('SECURE_AUTH_SALT'));
 define('LOGGED_IN_SALT', env('LOGGED_IN_SALT'));
 define('NONCE_SALT', env('NONCE_SALT'));
 
-
 // For developers: WordPress debugging mode
 // =============================================================================
 // Change this to true to enable the display of notices during development.
@@ -86,16 +86,35 @@ define('WP_DEBUG', env('WP_DEBUG', false));
 define('WP_DEBUG_DISPLAY', env('WP_DEBUG', false));
 define('SCRIPT_DEBUG', env('WP_DEBUG', false));
 
-
-// Absolute path to the WordPress directory.
+// Absolute path to the WordPress directory
 // =============================================================================
 
 if (!defined('ABSPATH')) {
-    define('ABSPATH', __DIR__ . '/wordpress');
+    define('ABSPATH', __DIR__ . '/' . WP_DIRECTORY);
 }
 
+require_once(ABSPATH . 'wp-settings.php');
 
-// Sets up WordPress vars and included files.
+// Env with Default Option
 // =============================================================================
 
-require_once ABSPATH . 'wp-settings.php';
+function env($key, $default = null) {
+    $value = getenv($key);
+    if (!$value) {
+        return $default;
+    }
+    return $value;
+}
+
+// Is Secure?
+// =============================================================================
+
+function isSecure() {
+    $isSecure = false;
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        return true;
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+        return true;
+    }
+    return false;
+}

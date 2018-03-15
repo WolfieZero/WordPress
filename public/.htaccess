@@ -1,0 +1,6 @@
+# Hide anything starting with `.`
+RedirectMatch 404 ".*\/\..*"
+
+# Hide folders from the world
+RedirectMatch 404 "^\/(vendor|config|node_modules|bootstrap)\/*"
+

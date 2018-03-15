@@ -4,7 +4,7 @@
  * Description: Clean's out what WordPress adds to your page.
  * Version: 1.0.0
  * Author: Neil Sweeney
- * Website: http://wolfiezero.com
+ * Website: https://wolfiezero.com/
  * License: GPLv2 or later
  */
 

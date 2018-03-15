@@ -2,7 +2,6 @@
 # Git Ignore
 # ==============================================================================
 
-
 # Defaults
 # ==============================================================================
 
@@ -14,20 +13,19 @@ Vagrantfile
 node_modules
 npm-debug.log
 
-
 # Public
 # ==============================================================================
 
-public/upgrade
-public/uploads
-public/languages
-public/wordpress
-public/index.php
-
+/public/wp/
+/public/upgrade/
+/public/uploads/
+/public/index.php
+/public/languages/
 
 # Plugins
 # ==============================================================================
 
-public/plugins/*
-!public/plugins/app-*
-!public/plugins/clean.php
+/public/plugins/*
+!/public/plugins/app-*
+!/public/plugins/clean.php
+!/public/plugins/relative-links.php

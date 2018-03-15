@@ -1,7 +1,7 @@
 {
-    "name": "wordpress",
+    "name": "21press",
     "description": "WordPress boilerplate for git deployment",
-    "keywords": ["wordpress", "boilerplate", "git", "laravel", "elixir"],
+    "keywords": ["wordpress", "boilerplate", "git", "21six"],
     "license": "MIT",
     "authors": [
         {
@@ -15,17 +15,15 @@
         "vlucas/phpdotenv": "^2.4",
         "symfony/var-dumper": "^3.2.7",
         "composer/installers": "^1.0",
-        "johnpbloch/wordpress-core": "4.*",
-        "roots/wp-password-bcrypt": "^1.0"
+        "johnpbloch/wordpress": "4.*",
+        "oscarotero/env": "^1.1"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.5.1",
         "wpackagist-plugin/demo-data-creator": "^1.3"
     },
     "autoload": {
-        "files": [
-            "bootstrap/helpers.php"
-        ]
+        "files": []
     },
     "repositories": [
         {
@@ -34,24 +32,24 @@
         }
     ],
     "scripts": {
-        "post-update-cmd": "@updateIndex",
-        "updateIndex": "php bootstrap/composer/update-index.php",
-        "post-root-package-install": "@env",
+        "post-install-cmd": [
+            "@update-index",
+            "@env"
+        ],
+        "post-update-cmd": "@update-index",
+        "update-index": "php scripts/composer/update-index.php",
         "env":  [
             "php -r \"copy('.env.example', '.env');\"",
-            "php bootstrap/composer/env.php"
-        ],
-        "test": [
-          "vendor/bin/phpcs --ignore=public/wordpress/,public/plugins,public/index.php,vendor/ -n -s ."
+            "php scripts/composer/env.php"
         ]
     },
     "extra": {
         "installer-paths": {
-            "public/mu-plugins/{$name}": ["type:wordpress-muplugin"],
-            "public/plugins/{$name}": ["type:wordpress-plugin"],
-            "public/themes/{$name}": ["type:wordpress-theme"]
+            "mu-plugins/{$name}": ["type:wordpress-muplugin"],
+            "plugins/{$name}": ["type:wordpress-plugin"],
+            "themes/{$name}": ["type:wordpress-theme"]
         },
-        "wordpress-install-dir": "public/wordpress"
+        "wordpress-install-dir": "public/wp"
     },
     "prefer-stable": true
 }
