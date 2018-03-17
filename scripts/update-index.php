@@ -5,7 +5,7 @@
 // If we need to make changes to `index.php` in future then this file can manage
 // those changes if needs be.
 
-$root = __DIR__ . '/../..';
+$root = dirname(__FILE__, 2);
 $composer = json_decode(file_get_contents($root . '/composer.json'));
 $wpDirectory = $composer->extra->{'wordpress-install-dir'};
 $wpPublicDirectory = str_replace('public/', '', $wpDirectory);

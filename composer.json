@@ -1,7 +1,7 @@
 {
-    "name": "21press",
+    "name": "wordpress",
     "description": "WordPress boilerplate for git deployment",
-    "keywords": ["wordpress", "boilerplate", "git", "21six"],
+    "keywords": ["wordpress", "boilerplate", "git"],
     "license": "MIT",
     "authors": [
         {
@@ -9,21 +9,24 @@
             "email": "neil@wolfiezero.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "php": "^5.5.9 || ^7.0",
+        "php": ">=7.0",
         "vlucas/phpdotenv": "^2.4",
         "symfony/var-dumper": "^3.2.7",
         "composer/installers": "^1.0",
         "johnpbloch/wordpress": "4.*",
-        "oscarotero/env": "^1.1"
+        "oscarotero/env": "^1.1",
+        "wpackagist-plugin/advanced-custom-fields": "*",
+        "wpackagist-plugin/amazon-s3-and-cloudfront": "^1.3"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^2.5.1",
         "wpackagist-plugin/demo-data-creator": "^1.3"
     },
     "autoload": {
-        "files": []
+        "files": [],
+        "psr-4": {
+            "WordPress\\Scripts\\": "./scripts/"
+        }
     },
     "repositories": [
         {
@@ -33,21 +36,24 @@
     ],
     "scripts": {
         "post-install-cmd": [
-            "@update-index",
-            "@env"
+            "WordPress\\Scripts\\EnvSetup::process",
+            "@update-index"
         ],
-        "post-update-cmd": "@update-index",
-        "update-index": "php scripts/composer/update-index.php",
-        "env":  [
-            "php -r \"copy('.env.example', '.env');\"",
-            "php scripts/composer/env.php"
-        ]
+        "post-update-cmd": [
+            "WordPress\\Scripts\\EnvSetup::process",
+            "@update-index"
+        ],
+        "update-index": "php scripts/update-index.php"
     },
     "extra": {
         "installer-paths": {
-            "mu-plugins/{$name}": ["type:wordpress-muplugin"],
-            "plugins/{$name}": ["type:wordpress-plugin"],
-            "themes/{$name}": ["type:wordpress-theme"]
+            "public/mu-plugins/{$name}/": [
+                "type:wordpress-muplugins",
+                "wpackagist-plugin/advanced-custom-fields",
+                "wpackagist-plugin/amazon-s3-and-cloudfront"
+            ],
+            "public/plugins/{$name}/": ["type:wordpress-plugin"],
+            "public/themes/{$name}/": ["type:wordpress-theme"]
         },
         "wordpress-install-dir": "public/wp"
     },

@@ -8,6 +8,6 @@
     "url": "https://github.com/WolfieZero/WordPress"
   },
   "scripts": {
-    "start": ""
+    "start": "# setup build tool first"
   }
 }

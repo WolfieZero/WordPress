@@ -26,6 +26,8 @@ npm-debug.log
 # ==============================================================================
 
 /public/plugins/*
+/public/mu-plugins/*
 !/public/plugins/app-*
+!/public/mu-plugins/app-*
 !/public/plugins/clean.php
 !/public/plugins/relative-links.php
