@@ -38,11 +38,11 @@
     "scripts": {
         "post-install-cmd": [
             "WordPress\\Scripts\\EnvSetup::process",
-            "@update-index"
+            "WordPress\\Scripts\\IndexSetup::process"
         ],
         "post-update-cmd": [
             "WordPress\\Scripts\\EnvSetup::process",
-            "@update-index"
+            "WordPress\\Scripts\\IndexSetup::process"
         ],
         "update-index": "php scripts/update-index.php"
     },
