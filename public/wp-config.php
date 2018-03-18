@@ -4,10 +4,10 @@
 // =============================================================================
 
 // Get the composer files
-require_once(__DIR__ . '/vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 // Detect the environment
-$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
 $dotenv->load();
 $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST']);
 
@@ -15,7 +15,7 @@ $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST']);
 // =============================================================================
 
 // Set the home url to the current domain
-define('WP_HOME', env('WP_URL', 'http' . (isSecure() ? 's' : '') . '://' . $_SERVER['HTTP_HOST']));
+define('WP_HOME', env('WP_HOME', host()));
 
 // Directory where WordPress will be located
 define('WP_DIRECTORY', env('WP_DIRECTORY', 'wp'));
@@ -95,10 +95,17 @@ if (!defined('ABSPATH')) {
 
 require_once(ABSPATH . 'wp-settings.php');
 
-// Env with Default Option
+// Functions
 // =============================================================================
 
-function env($key, $default = null) {
+/**
+ * Returns env value or default value if none avaliable.
+ *
+ * @param string $key
+ * @param string $default
+ * @return string
+ */
+function env(string $key, string $default = null) : string {
     $value = getenv($key);
     if (!$value) {
         return $default;
@@ -106,10 +113,12 @@ function env($key, $default = null) {
     return $value;
 }
 
-// Is Secure?
-// =============================================================================
-
-function isSecure() {
+/**
+ * Returns `true` if the site is serverd via a secure port.
+ *
+ * @return boolean
+ */
+function isSecure() : bool {
     $isSecure = false;
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
         return true;
@@ -117,4 +126,24 @@ function isSecure() {
         return true;
     }
     return false;
+}
+
+/**
+ * Returns the full host name including protocol.
+ *
+ * @return string
+ */
+function host() : string {
+    $host = 'http://localhost';
+    if (isset($_SERVER['HTTP_HOST'])) {
+        $host = 'http';
+
+        if (isSecure()) {
+            $host .= 's';
+        }
+
+        $host = '://' . $_SERVER['HTTP_HOST'];
+    }
+
+    return $host;
 }
