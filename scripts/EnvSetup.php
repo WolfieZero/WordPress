@@ -146,7 +146,7 @@ class EnvSetup
         $io->write('==============================');
         $io->write('');
 
-        if (!$io->askConfirmation('Press return if you want to populate the .env (Y/n)? ', true)) {
+        if (!$io->askConfirmation('Press return if you want to populate the .env? [Y/n] ', true)) {
             return;
         }
 
@@ -158,7 +158,7 @@ class EnvSetup
         $io->write('');
 
         $wpEnv = $io->ask('Environment name (default `' . self::$defaultWpEnv . '`): ', self::$defaultWpEnv);
-        $wpDebug = $io->askConfirmation('Turn on debugging (y/N)? ', self::$defaultWpDebug);
+        $wpDebug = $io->askConfirmation('Turn on debugging? [y/N] ', self::$defaultWpDebug);
 
         $io->write('');
 
