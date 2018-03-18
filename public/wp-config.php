@@ -135,6 +135,7 @@ function isSecure() : bool {
  */
 function host() : string {
     $host = 'http://localhost';
+
     if (isset($_SERVER['HTTP_HOST'])) {
         $host = 'http';
 

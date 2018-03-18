@@ -4,57 +4,45 @@ namespace WordPress\Scripts;
 
 use Composer\Script\Event;
 
-class EnvSetup
+class EnvSetup extends ScriptHandler
 {
-
-    /**
-     * Root of this WordPress project (created in `self::process()`).
-     *
-     * @var string
-     */
-    private static $root;
-
-    /**
-     * Default database host.
-     *
-     * @var string
-     */
-    private static $defaultDbHost = 'localhost';
-
-    /**
-     * Default database name.
-     *
-     * @var string
-     */
-    private static $defaultDbName = 'wordpress';
-
-    /**
-     * Default database user.
-     *
-     * @var string
-     */
-    private static $defaultDbUser = 'root';
-
-    /**
-     * Default database password.
-     *
-     * @var string
-     */
-    private static $defaultDbPass = 'root';
-
-    /**
-     * Default WordPress Environment.
-     *
-     * @var string
-     */
-    private static $defaultWpEnv = 'production';
-
-    /**
-     * Default WordPress debug setting.
-     *
-     * @var boolean
-     */
-    private static $defaultWpDebug = false;
+    private static $options = [
+        'WP_ENV' => [
+            'ask' => 'Environment name?',
+            'default' => 'production',
+            'type' => 'text',
+        ],
+        'WP_HOME' => [
+            'ask' => 'WordPress home URL?',
+            'default' => '',
+            'type' => 'text',
+        ],
+        'WP_DEBUG' => [
+            'ask' => 'Debug mode on?',
+            'default' => false,
+            'type' => 'confirm',
+        ],
+        'DB_HOST' => [
+            'ask' => 'Database host?',
+            'default' => '127.0.0.1',
+            'type' => 'text',
+        ],
+        'DB_NAME' => [
+            'ask' => 'Database name?',
+            'default' => 'wordpress',
+            'type' => 'text',
+        ],
+        'DB_USER' => [
+            'ask' => 'Database user?',
+            'default' => 'root',
+            'type' => 'text',
+        ],
+        'DB_PASSWORD' => [
+            'ask' => 'Database password',
+            'default' => 'root',
+            'type' => 'text',
+        ]
+    ];
 
     /**
      * Makes a random key... simple.
@@ -86,22 +74,14 @@ class EnvSetup
      * @param boolean $wpDebug
      * @return boolean
      */
-    private static function generateFile(string $dbHost, string $dbName, string $dbUser, string $dbPass, string $wpEnv, bool $wpDebug) : bool
+    private static function generateFile(array $values) : bool
     {
         $envFile = self::$root . '/.env';
         copy(self::$root . '/.env.example', $envFile);
 
         $envContents = file_get_contents($envFile);
 
-        $configs = [
-            'WP_ENV' => $wpEnv,
-            'WP_DEBUG' => $wpDebug ? 'true' : 'false',
-
-            'DB_HOST' => $dbHost,
-            'DB_NAME' => $dbName,
-            'DB_USER' => $dbUser,
-            'DB_PASSWORD' => $dbPass,
-
+        $keys = [
             'AUTH_KEY' => '\'' . self::makeRandomKey() . '\'',
             'SECURE_AUTH_KEY' => '\'' . self::makeRandomKey() . '\'',
             'LOGGED_IN_KEY' => '\'' . self::makeRandomKey() . '\'',
@@ -112,14 +92,23 @@ class EnvSetup
             'NONCE_SALT' => '\'' . self::makeRandomKey() . '\'',
         ];
 
+        $configs = array_merge($values, $keys);
+
         $pattern = '(.*)';
 
         foreach ($configs as $config => $value) {
-            $envContents = preg_replace(
-                '/' . $config . '=' . $pattern . '/i',
-                $config . '=' . $value,
-                $envContents
-            );
+            $fullPattern = '/' . $config . '=' . $pattern . '/i';
+            $content = $config . '=' . $value;
+
+            if(preg_match($fullPattern, $envContents) > 0) {
+                $envContents = preg_replace(
+                    $fullPattern,
+                    $content,
+                    $envContents
+                );
+            } else {
+                $envContents .= "\n" . $content;
+            }
         }
 
         return file_put_contents($envFile, $envContents) ? true : false;
@@ -133,42 +122,34 @@ class EnvSetup
      */
     public static function process(Event $event)
     {
-        self::$root = dirname(__FILE__, 2);
+        self::setupHandler($event);
 
         if (file_exists(self::$root . '/.env')) {
             return;
         }
 
-        $io = $event->getIO();
-        $io->write('');
-        $io->write('==============================');
-        $io->write('Create .env File');
-        $io->write('==============================');
-        $io->write('');
+        self::printHeader('Create .env File');
 
-        if (!$io->askConfirmation('Press return if you want to populate the .env? [Y/n] ', true)) {
+        if (!self::$io->askConfirmation('Do you want to populate the .env? [Y/n] ', true)) {
             return;
         }
 
-        $dbHost = $io->ask('Database Host: ', self::$defaultDbHost);
-        $dbName = $io->ask('Database Name: ', self::$defaultDbName);
-        $dbUser = $io->ask('Database User: ', self::$defaultDbUser);
-        $dbPass = $io->askAndHideAnswer('Database Pass: ', self::$defaultDbPass);
+        $values = [];
 
-        $io->write('');
-
-        $wpEnv = $io->ask('Environment name (default `' . self::$defaultWpEnv . '`): ', self::$defaultWpEnv);
-        $wpDebug = $io->askConfirmation('Turn on debugging? [y/N] ', self::$defaultWpDebug);
-
-        $io->write('');
-
-        $io->write('Building .env file...');
-
-        if (!self::generateFile($dbHost, $dbName, $dbUser, $dbPass, $wpEnv, $wpDebug)) {
-            $io->writeError('Failed to create .env file');
+        foreach (self::$options as $key => $option) {
+            $values[$key] = self::query($option);
         }
 
-        $io->write('.env created at `' . self::$root . '/.env`');
+        self::$io->write('');
+        self::$io->write('Building .env file...');
+
+        if (! self::generateFile($values)) {
+            self::$io->writeError('Failed to create .env file');
+        } else {
+            self::$io->write('.env created at `' . self::$root . '/.env`');
+        }
+
+        self::$io->write('');
     }
 
 }
