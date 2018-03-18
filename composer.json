@@ -42,6 +42,12 @@
         "post-update-cmd": [
             "WordPress\\Scripts\\EnvSetup::process",
             "WordPress\\Scripts\\IndexSetup::process"
+        ],
+        "clean": [
+            "rm .env",
+            "rm -rf vendor",
+            "rm -rf public/wp",
+            "rm public/index.php"
         ]
     },
     "extra": {
