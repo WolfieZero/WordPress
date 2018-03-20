@@ -128,28 +128,27 @@ class EnvSetup extends ScriptHandler
             return;
         }
 
-        self::printHeader('Create .env File');
+        self::writeHeader('Create .env File');
 
-        if (!self::$io->askConfirmation('Do you want to populate the .env? [Y/n] ', true)) {
+        if (! self::query('Do you want to populate the .env? [Y/n] ', 'confirm', true)) {
             return;
         }
 
         $values = [];
 
         foreach (self::$options as $key => $option) {
-            $values[$key] = self::query($option);
+            $values[$key] = self::query($option['ask'], $option['type'], $option['default']);
         }
 
-        self::$io->write('');
-        self::$io->write('Building .env file...');
+        self::write('');
+        self::write('Building .env file...');
 
         if (! self::generateFile($values)) {
-            self::$io->writeError('Failed to create .env file');
+            self::writeError('Failed to create .env file');
         } else {
-            self::$io->write('.env created at `' . self::$root . '/.env`');
+            self::write('.env created at `' . self::$root . '/.env`');
         }
 
-        self::$io->write('');
+        self::writeFooter();
     }
-
 }

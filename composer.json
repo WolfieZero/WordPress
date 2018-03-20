@@ -37,6 +37,7 @@
     "scripts": {
         "post-install-cmd": [
             "WordPress\\Scripts\\EnvSetup::process",
+            "WordPress\\Scripts\\DatabaseSetup::process",
             "WordPress\\Scripts\\IndexSetup::process"
         ],
         "post-update-cmd": [
