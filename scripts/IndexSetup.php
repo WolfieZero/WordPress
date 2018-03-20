@@ -15,6 +15,7 @@ class IndexSetup extends ScriptHandler
      */
     public static function process(Event $event)
     {
+        self::setupHandler($event);
         $wpFolder = 'wp';
         $publicFolder = 'public';
         $wpDirectory = '/' . $publicFolder . '/' . $wpFolder;
