@@ -19,7 +19,6 @@
         "vlucas/phpdotenv": "^2.4",
         "oscarotero/env": "^1.1",
         "johnpbloch/wordpress": "^4.9",
-        "rareloop/lumberjack-core": "^3.2",
         "wpackagist-plugin/wp-mail-smtp": "*",
         "wpackagist-plugin/wp-migrate-db": "*",
         "wpackagist-plugin/amazon-s3-and-cloudfront": "*"
@@ -67,6 +66,7 @@
             "php wp-cli.phar cli update --yes"
         ],
         "install-lumberjack": [
+            "@composer require rareloop/lumberjack-core",
             "cd public/themes && git clone --depth=1 git@github.com:rareloop/lumberjack.git && rm -rf lumberjack/.git"
         ],
         "tidy": [
