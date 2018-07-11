@@ -1,66 +1,91 @@
 {
-    "name": "wordpress",
-    "description": "WordPress boilerplate for git deployment",
-    "keywords": ["wordpress", "boilerplate", "git"],
+    "name": "wolfiezero/wordpress",
+    "description": "Sensible git friendly WordPress install with added Lumberjack if required",
+    "type": "project",
     "license": "MIT",
     "authors": [
         {
             "name": "Neil Sweeney",
-            "email": "neil@wolfiezero.com"
+            "email": "neil@wolfiezero.com",
+            "homepage": "https://wolfiezero.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/wolfiezero/wordpress/issues"
+    },
     "require": {
         "php": ">=7.0",
+        "wp-premium/advanced-custom-fields-pro": "dev-master",
         "vlucas/phpdotenv": "^2.4",
-        "symfony/var-dumper": "^3.2.7",
-        "composer/installers": "^1.0",
-        "johnpbloch/wordpress": "4.*",
         "oscarotero/env": "^1.1",
-        "wpackagist-plugin/advanced-custom-fields": "*",
-        "roots/wp-password-bcrypt": "^1.0"
+        "johnpbloch/wordpress": "^4.9",
+        "rareloop/lumberjack-core": "^3.2",
+        "wpackagist-plugin/wp-mail-smtp": "*",
+        "wpackagist-plugin/wp-migrate-db": "*",
+        "wpackagist-plugin/amazon-s3-and-cloudfront": "*"
     },
     "require-dev": {
-        "wpackagist-plugin/demo-data-creator": "^1.3"
-    },
-    "autoload": {
-        "files": [],
-        "psr-4": {
-            "WordPress\\Scripts\\": "./scripts/"
-        }
+        "symfony/var-dumper": "^4.1",
+        "wpackagist-plugin/demo-data-creator": "*",
+        "larapack/dd": "^1.1"
     },
     "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "wp-premium/advanced-custom-fields-pro",
+                "version": "master",
+                "type": "wordpress-plugin",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip",
+                    "reference": "master"
+                },
+                "require": {
+                    "composer/installers": "^1.0"
+                }
+            }
+        },
         {
             "type": "composer",
             "url": "https://wpackagist.org"
         }
     ],
-    "scripts": {
-        "post-install-cmd": [
-            "WordPress\\Scripts\\EnvSetup::process",
-            "WordPress\\Scripts\\DatabaseSetup::process",
-            "WordPress\\Scripts\\IndexSetup::process"
-        ],
-        "post-update-cmd": [
-            "WordPress\\Scripts\\EnvSetup::process",
-            "WordPress\\Scripts\\IndexSetup::process"
-        ],
-        "clean": [
-            "rm .env",
-            "rm -rf vendor",
-            "rm -rf public/wp",
-            "rm public/index.php"
-        ]
-    },
     "extra": {
         "installer-paths": {
-            "public/mu-plugins/{$name}/": [
-                "type:wordpress-muplugins",
-                "wpackagist-plugin/advanced-custom-fields"
-            ],
+            "public/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
             "public/plugins/{$name}/": ["type:wordpress-plugin"],
             "public/themes/{$name}/": ["type:wordpress-theme"]
         },
         "wordpress-install-dir": "public/wp"
     },
-    "prefer-stable": true
+    "scripts": {
+        "install-wp-cli": [
+            "curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+        ],
+        "update-wp-cli": [
+            "php wp-cli.phar cli update --yes"
+        ],
+        "install-lumberjack": [
+            "cd public/themes && git clone --depth=1 git@github.com:rareloop/lumberjack.git && rm -rf lumberjack/.git"
+        ],
+        "tidy": [
+            "rm -rf public/wp/wp-content"
+        ],
+        "remove-git": [
+            "rm -rf .git/"
+        ],
+        "env": [
+            "php -r \"copy('.env.example', '.env');\""
+        ],
+        "new-project": [
+            "@composer install-wp-cli",
+            "@composer remove-git",
+            "@composer tidy",
+            "@composer env"
+        ],
+        "post-root-package-install": [
+            "@composer new-project"
+        ]
+    }
 }

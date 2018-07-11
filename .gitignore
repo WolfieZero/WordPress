@@ -1,33 +1,27 @@
+# App
 # ==============================================================================
-# Git Ignore
-# ==============================================================================
-
-# Defaults
-# ==============================================================================
-
 .env
+*.log
+cache/
 vendor/
-.vagrant
 .DS_Store
-Vagrantfile
-node_modules
-npm-debug.log
-
-# Public
-# ==============================================================================
-
-/public/wp/
-/public/upgrade/
-/public/uploads/
-/public/index.php
-/public/languages/
+public/wp/
+wp-cli.phar
+node_modules/
+public/upgrade
+public/uploads/*
 
 # Plugins
 # ==============================================================================
+public/plugins/*
+!public/plugins/app-*
+!public/plugins/.gitkeep
 
-/public/plugins/*
-/public/mu-plugins/*
-!/public/plugins/app-*
-!/public/mu-plugins/app-*
-!/public/plugins/clean.php
-!/public/plugins/relative-links.php
+# MU-Plugins
+# ==============================================================================
+public/mu-plugins/*
+!public/mu-plugins/relative-urls.php
+!public/mu-plugins/acf-json-repoint.php
+!public/mu-plugins/disallow-indexing.php
+
+

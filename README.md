@@ -1,79 +1,80 @@
 # WordPress
 
-WordPress setup to work nicely with modern deployment methods
+WordPress for the versioning generation with optional Lumberjack support.
 
+## About
 
-## Configuring
+This version of WordPress is based off [Bedrock][1] with a few custom additions
+to make it more suited to my own workflow.
 
-Before doing anything with WordPress you'll need to build the `.env` file. If
-you don't have one present already then run `composer env` in the root and a new
-one will be generate with randomised keys.
+## What's Included?
 
-You'll most likely need to edit your MySQL connection details updating the
-following lines:
+- Git version control support
+- [Composer][8] based package managment including themes and plugins via
+  [WordPress Packagist][9]
+- [Laravel Valet][10] support
+- Configuration management via `.env` files and environments
 
-    DB_HOST=localhost
-    DB_NAME=wordpress
-    DB_USER=root
-    DB_PASSWORD=root
+### Mu-Plugins
 
-You also have WordPress options to consider:
+- **ACF JSON Repoint**
+  > Points all ACF JSON syncing to a folder outside the theme.
+- **Disallow Indexing** (From Bedrock)
+  > Disallow indexing of your site on non-production environments.
+- **Relative URL**
+  > Makes URLs created by WordPress relative.
 
-    WP_ENV=local
-    WP_DEBUG=false
-    WP_THEME=app
+### Plugins
 
-`WP_ENV` is the environment you're WordPress currently sits. Most likely you
-use `local` for when you're developing your site locally and then `production`
-for when the site is put live.
+- **[Advanced Custom Fields Pro][4]** (Requires purchased key)
+  > Customise WordPress with powerful, professional and intuitive fields.
+- **[WP Mail SMTP][5]**
+  > The most popular WordPress SMTP and PHP Mailer plugin. Trusted by over 900k
+  > sites.
+- **[WP Migrate DB][6]**
+  > Migrates your database by running find & replace on URLs and file paths,
+  > handling serialized data, and saving an SQL file.
+- **[WP Migrate DB][6]**
+  > Migrates your database by running find & replace on URLs and file paths,
+  > handling serialized data, and saving an SQL file.
+- **[Demo Data Creator][7]** (Dev install only)
+  > Demo Data Creator is a Wordpress and BuddyPress plugin that allows a
+  > Wordpress developer to create demo users, blogs, posts, comments and more.
+  > DO NOT USE ON A PRODUCTION SITE.
 
-`WP_DEBUG` is set to `false` by default but when developing your site you are
-best to set this to `true` to see any error outputs.
+## Themes
 
-`WP_THEME` is the name of the theme folder you want to use. `app` is the default
-option but if you want a more specific name then update that value. If you do
-you'll need to update  `gulpfile` where it says `var theme = 'app';` to reflect
-the new theme folder name.
+Optionally you can install [Lumberjack][2], but by default there is no theme
+included so you are free to add your own. If you do wish to install Lumberjack
+run `composer install-lumberjack` and it will be created for you.
 
-Worth noting that the file **`.env` SHOULD NEVER BE COMMITTED** as it contains
-very sensitive information about your setup. Thus, when you go live with your
-project or reproduced on another environment, you'll need to setup the file
-again.
+## Commands
 
+`composer install-wp-cli`
+Installs [WP-CLI][3]
 
-## Adding Plugins
+`composer update-wp-cli`
+Update [WP-CLI][3]
 
-You can manage all your plugins that are from the [WordPress Plugin Directory](http://wordpress.org/plugins/)
-within composer via [WordPress Packagist](https://wpackagist.org/).
+`composer install-lumberjack`
+Installs [Lumberjack][2] theme from git and cleans the theme's directory
 
-To simply add a plugin go to the root of this project in the terminal and run
-the command `composer require wpackagist-plugin/PLUGIN_SLUG` replacing
-`PLUGIN_SLUG` with the
+`composer tidy`
+Removes the `wp-content` directory from the `wp` folder
 
+`composer remove-git`
+Remove the .git directory from the project root
 
-## Adding a Custom Plugin
+`composer new-project`
+Runs the follow composer commands; `install-wp-cli`, `remove-git`, `tidy`, `env`
 
-If you created a plugin that is only required for that project and isn't a
-public repo or isn't in a repo at all, then you will need to edit `/.gitignore`
-file. By default it ignores all folders in the plugin directory as you don't
-want to add these to your own repo, but you can prefix your own plugin with
-`app-` and git will know not to ignore it.
-
-If you don't to prefix it for what ever reason then you'll just need to add it
-to the `.gitingore` file just below the line `!public/plugins/app-*` in the
-following way
-
-    !/public/plugins/PLUGIN_SLUG
-
-Where it says "`PLUGIN_SLUG`" you should replace that with your plugin's folder
-name.
-
-
-## Author(s)
-
-- Neil Sweeney <neil@wolfiezero.com>
-
-
-## License
-
-[MIT License](LICENSE)
+[1]: https://roots.io/bedrock/
+[2]: https://github.com/Rareloop/lumberjack
+[3]: https://wp-cli.org/
+[4]: https://advancedcustomfields.com/
+[5]: https://wordpress.org/plugins/wp-mail-smtp/
+[6]: https://wordpress.org/plugins/wp-migrate-db/
+[7]: https://wordpress.org/plugins/demo-data-creator/
+[8]: https://getcomposer.org/
+[9]: https://wpackagist.org/
+[10]: https://laravel.com/docs/5.6/valet

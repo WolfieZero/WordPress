@@ -1,0 +1,158 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "globals": {
+    "fetch": false,
+    "window": false,
+    "jQuery": false,
+    "Headers": false,
+    "navigator": false,
+    "document": false,
+    "alert": false
+  },
+  "plugins": [],
+  "rules": {
+    "comma-dangle": ["error", "always-multiline"],
+    "no-cond-assign": ["error"],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "info",
+          "warn",
+          "error",
+          "debug",
+          "group",
+          "groupEnd",
+          "groupCollapsed"
+        ]
+      }
+    ],
+    "no-constant-condition": ["error"],
+    "no-control-regex": ["error"],
+    "no-debugger": ["error"],
+    "no-dupe-args": ["error"],
+    "no-dupe-keys": ["error"],
+    "no-duplicate-case": ["error"],
+    "no-empty": ["error"],
+    "no-empty-character-class": ["error"],
+    "no-ex-assign": ["error"],
+    "no-extra-boolean-cast": ["error"],
+    "no-extra-parens": ["off"],
+    "no-extra-semi": ["error"],
+    "no-func-assign": ["error"],
+    "no-inner-declarations": ["error"],
+    "no-invalid-regexp": ["error"],
+    "no-irregular-whitespace": ["error"],
+    "no-negated-in-lhs": ["error"],
+    "no-obj-calls": ["error"],
+    "no-regex-spaces": ["error"],
+    "no-sparse-arrays": ["error"],
+    "no-unreachable": ["error"],
+    "quote-props": ["off"],
+    "use-isnan": ["error"],
+    "valid-jsdoc": [
+      "error",
+      {
+        "requireReturn": false,
+        "requireReturnDescription": false
+      }
+    ],
+    "valid-typeof": ["error"],
+    "block-scoped-var": ["off"],
+    "complexity": ["off"],
+    "consistent-return": ["off"],
+    "curly": ["error"],
+    "default-case": ["error"],
+    "dot-notation": ["error"],
+    "eqeqeq": ["warn"],
+    "guard-for-in": ["warn"],
+    "no-alert": ["off"],
+    "no-caller": ["error"],
+    "no-div-regex": ["error"],
+    "no-else-return": ["warn"],
+    "no-labels": ["error"],
+    "no-eq-null": ["error"],
+    "no-eval": ["error"],
+    "no-extend-native": ["error"],
+    "no-extra-bind": ["error"],
+    "no-fallthrough": ["error"],
+    "no-floating-decimal": ["error"],
+    "no-implied-eval": ["error"],
+    "no-iterator": ["error"],
+    "no-lone-blocks": ["error"],
+    "no-loop-func": ["error"],
+    "no-multi-spaces": ["error"],
+    "no-multi-str": ["error"],
+    "no-native-reassign": ["error"],
+    "no-new": ["error"],
+    "no-new-func": ["error"],
+    "no-new-wrappers": ["error"],
+    "no-octal": ["error"],
+    "no-octal-escape": ["error"],
+    "no-param-reassign": ["error"],
+    "no-process-env": ["off"],
+    "no-proto": ["error"],
+    "no-redeclare": ["error"],
+    "no-return-assign": ["error"],
+    "no-script-url": ["error"],
+    "no-self-compare": ["error"],
+    "no-sequences": ["error"],
+    "no-throw-literal": ["error"],
+    "no-unused-expressions": ["error"],
+    "no-void": ["error"],
+    "no-warning-comments": ["off"],
+    "no-with": ["error"],
+    "radix": ["error"],
+    "vars-on-top": ["warn"],
+    "wrap-iife": ["error"],
+    "yoda": ["warn"],
+    "strict": ["off"],
+    "no-catch-shadow": ["error"],
+    "no-delete-var": ["error"],
+    "no-label-var": ["error"],
+    "no-shadow": ["error"],
+    "no-shadow-restricted-names": ["error"],
+    "no-undef": ["error"],
+    "no-undef-init": ["error"],
+    "no-undefined": ["error"],
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false
+      }
+    ],
+    "no-use-before-define": ["error"],
+    "indent": ["error", 4, {
+      "SwitchCase": 1
+    }],
+    "keyword-spacing": ["error", {
+      "before": true,
+      "after": true
+    }],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-var": ["warn"],
+    "generator-star-spacing": [2, "both"],
+    "max-depth": ["error", 3],
+    "max-len": ["off"],
+    "max-params": ["error", 5],
+    "max-statements": ["off"],
+    "no-bitwise": ["off"],
+    "no-plusplus": ["error"]
+  }
+}
