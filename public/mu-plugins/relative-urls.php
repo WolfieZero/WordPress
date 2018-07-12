@@ -60,7 +60,7 @@ class RelativeUrls
             return;
         }
 
-        foreach (sefl::$filters as $filter) {
+        foreach (self::$filters as $filter) {
             add_filter($filter, [get_called_class(), 'makeRelative']);
         }
     }
