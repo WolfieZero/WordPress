@@ -1,6 +1,6 @@
 {
     "name": "wolfiezero/wordpress",
-    "description": "Sensible git friendly WordPress install with added Lumberjack if required",
+    "description": "Sensible git friendly WordPress install",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -64,10 +64,6 @@
         ],
         "update-wp-cli": [
             "php wp-cli.phar cli update --yes"
-        ],
-        "install-lumberjack": [
-            "@composer require rareloop/lumberjack-core",
-            "cd public/themes && git clone --depth=1 git@github.com:rareloop/lumberjack.git && rm -rf lumberjack/.git"
         ],
         "tidy": [
             "rm -rf public/wp/wp-content"
