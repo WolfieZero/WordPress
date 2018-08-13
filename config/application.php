@@ -60,7 +60,7 @@ if (! defined('WP_DEBUG') || ! WP_DEBUG) {
  * Theme
  * =============================================================================
  */
-define('WP_DEFAULT_THEME', env('WP_THEME') ?: 'lumberjack');
+define('WP_DEFAULT_THEME', env('WP_THEME') ?: 'app');
 
 /**
  * URLs
